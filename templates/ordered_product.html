@@ -1,0 +1,18 @@
+<div class="small-container cart-page">
+        {% if orders %}
+        <table>
+            <tbody><tr>
+                <th>Product</th>
+                <th>Quantity</th>
+            </tr>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.product }}</td>
+                <td>{{ order.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </tbody></table>
+       {% else %}
+       <p>No orders</p>
+       {% endif %}
+    </div>

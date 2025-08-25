@@ -17,6 +17,7 @@ class Order(models.Model):
     delete_status=models.IntegerField(choices=DELETE_CHOICES,default=1)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
+    total_price=models.FloatField(null=True)
 
     def __str__(self) -> str:
         return "order-{}-{}".format(self.id,self.owner.name)
@@ -26,3 +27,8 @@ class OrderedItem(models.Model):
     product=models.ForeignKey(Product,related_name='added_carts',on_delete=models.SET_NULL,null=True)
     quantity=models.IntegerField(default=1)
     owner=models.ForeignKey(Order,on_delete=models.CASCADE,related_name='added_items')
+
+class OrderedProducts(models.Model):
+    product=models.ForeignKey(Product,related_name='ordered_products',on_delete=models.SET_NULL,null=True)
+    order=models.ForeignKey(Order,on_delete=models.CASCADE)
+    quantity=models.IntegerField(default=1)

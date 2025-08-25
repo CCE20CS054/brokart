@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from . models import Order,OrderedItem
+from . models import Order,OrderedItem,OrderedProducts
 from django.contrib import messages
 from products.models import Product
 from django.contrib.auth.decorators import login_required
@@ -27,6 +27,8 @@ def checkout_cart(request):
         try:
             user=request.user
             customer=user.customer_profile
+            product=request.POST.get('product')
+            quantity=request.POST.get('quantity')
             total=float(request.POST.get('total'))
             order_obj=Order.objects.get(
                 owner=customer,
@@ -36,6 +38,11 @@ def checkout_cart(request):
                 order_obj.order_status=Order.ORDER_CONFIRMED
                 order_obj.total_price=total
                 order_obj.save()
+                order_obj=OrderedProducts.objects.create(
+                    order=order_obj.id,
+                    product=product,
+                    quantity=quantity
+                )
                 print()
                 status_message="Your order is processed. Your item will be delivered within 2 days"
                 messages.success(request,status_message)
@@ -79,3 +86,9 @@ def add_to_cart(request):
             ordered_item.quantity=ordered_item.quantity+quantity
             ordered_item.save()
     return redirect('cart')
+
+@login_required(login_url='account')
+def ordered_product(request,id):
+    all_orders=OrderedProducts.objects.filer(order_id=id) 
+    context={'ordered':all_orders}
+    return render(request,'ordered_product.html',context)
