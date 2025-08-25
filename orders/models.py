@@ -14,9 +14,12 @@ class Order(models.Model):
     STATUS_CHOICE=((ORDER_PROCESSED,"ORDER_PROCESSED"),(ORDER_DELIVERED,"ORDER_DELIVERED"),(ORDER_REJECTED,"ORDER_REJECTED"))
     order_status=models.IntegerField(choices=STATUS_CHOICE,default=CART_STAGE)
     owner=models.ForeignKey(Customer,on_delete=models.SET_NULL,null=True,related_name='orders')
-    delete_status=models.IntegerField(choices=DELETE_CHOICES,default='Live')
+    delete_status=models.IntegerField(choices=DELETE_CHOICES,default=1)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return "order-{}-{}".format(self.id,self.owner.name)
 
 # model for ordered item
 class OrderedItem(models.Model):

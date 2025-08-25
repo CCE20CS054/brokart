@@ -25,14 +25,17 @@ def show_account(request):
             )
             # creates customer account
             customer=Customer.objects.create(
+                name=username,
                 user=user,
                 phone=phone,
                 address=address
             )
+            print("Customer",customer)
             success_message="User registered successfully"
             messages.success(request,success_message)
             
         except Exception as e:
+            print("error",e)
             error_message="Duplicate username or invalid inputs"
             messages.error(request,error_message)
     if request.POST and 'login' in request.POST:

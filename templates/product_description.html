@@ -10,8 +10,9 @@
                 <p>{{ product.title }}</p>
                 <h1>{{ product.title }}</h1>
                 <h4>${{ product.price }}</h4>
-                <form method="post" action="" enctype="multipart/form-data">
-
+                <form method="post" action="{% url 'add_to_cart' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                <input type="hidden" value="{{ product.id }}" name="product_id"/>
                 <input type="number" name="quantity" value="1">
                 <button type="submit" class="btn">Add To Cart</button>
             </form>

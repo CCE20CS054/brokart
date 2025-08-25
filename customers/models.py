@@ -9,9 +9,9 @@ class Customer(models.Model):
     address=models.TextField()
     user=models.OneToOneField(User,on_delete=models.CASCADE,related_name='customer_profile')
     phone=models.CharField(max_length=10)
-    delete_status=models.IntegerField(choices=DELETE_CHOICES,default='Live')
+    delete_status=models.IntegerField(choices=DELETE_CHOICES,default=1)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 
     def __str__(self)  -> str:
-        return self.title
+        return self.user.username
