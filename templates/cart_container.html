@@ -1,15 +1,19 @@
 {% load static %}
 {% load multiply %}
 {% load gettotal %}
+<form method="post" action="{% url 'checkout' %}" enctype="multipart/form-data">
 <div class="small-container cart-page">
         {% if cart and cart.added_items.all %}
         <table>
-            <tbody><tr>
+            <tbody><tr> 
                 <th>Product</th>
                 <th>Quantity</th>
                 <th>Subtotal</th>
-            </tr>
+            </tr>   
             {% for cart_item in cart.added_items.all %}
+             {% csrf_token %}
+            <input type="hidden" name="products" value="{{ cart_item.product.id }}">
+            <input type="hidden" name="quantities" value="{{ cart_item.quantity }}">
             <tr>
                 <td>
                     <div class="cart-info">
@@ -35,8 +39,7 @@
                     <td>${% gettotal cart %}</td>
                 </tr>
                 <tr><td colspan="2"></td><td>
-                    <form method="post" action="{% url 'checkout' %}" enctype="multipart/form-data">
-                        {% csrf_token %}
+                    
                     <input type="hidden" name="total" value="{% gettotal cart %}"/>
                     <button class="btn" type="submit">CheckOut</button>
                 </form>

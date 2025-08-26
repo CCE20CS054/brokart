@@ -27,8 +27,10 @@ def checkout_cart(request):
         try:
             user=request.user
             customer=user.customer_profile
-            product=request.POST.get('product')
-            quantity=request.POST.get('quantity')
+            product_ids=request.POST.getlist('products')
+            quantities=request.POST.getlist('quantities')
+            print(product_ids)
+            print(quantities)
             total=float(request.POST.get('total'))
             order_obj=Order.objects.get(
                 owner=customer,
@@ -38,11 +40,12 @@ def checkout_cart(request):
                 order_obj.order_status=Order.ORDER_CONFIRMED
                 order_obj.total_price=total
                 order_obj.save()
-                order_obj=OrderedProducts.objects.create(
-                    order=order_obj.id,
-                    product=product,
-                    quantity=quantity
-                )
+                for pid, qty in zip(product_ids, quantities):
+                    OrderedProducts.objects.create(
+                        order=order_obj,
+                        product_id=pid,
+                        quantity=int(qty)
+                    )   
                 print()
                 status_message="Your order is processed. Your item will be delivered within 2 days"
                 messages.success(request,status_message)
@@ -89,6 +92,6 @@ def add_to_cart(request):
 
 @login_required(login_url='account')
 def ordered_product(request,id):
-    all_orders=OrderedProducts.objects.filer(order_id=id) 
-    context={'ordered':all_orders}
+    all_orders=OrderedProducts.objects.filter(order_id=id) 
+    context={'orders':all_orders}
     return render(request,'ordered_product.html',context)
