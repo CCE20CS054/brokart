@@ -17,12 +17,16 @@
         <div class="container">
             {% include 'menu.html' %}   
             {% block banner %}
-        
+            
+            {% if request.path == '/' %}
             {% include 'banner_layout.html' %}
+            {% endif %}
             {% endblock banner %}
 
         </div>
     </div>
+
+    
     {% block content %}
     <!-- Feadtued Categories -->
 
