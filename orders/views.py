@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from . models import Order,OrderedItem,OrderedProducts
+from . models import Order,OrderedItem
 from django.contrib import messages
 from products.models import Product
 from django.contrib.auth.decorators import login_required
@@ -9,12 +9,17 @@ def show_cart(request):
     customer=user.customer_profile
     print("user",user)
     print("customer",customer)
-    cart_obj,created=Order.objects.get_or_create(
+    cart_obj=Order.objects.filter(
         owner=customer,
         order_status=Order.CART_STAGE
-    )
-    context={'cart':cart_obj}
-    return render(request,'cart.html',context)
+    ).first()
+    if cart_obj:
+        context={'cart':cart_obj}
+        return render(request,'cart.html',context)
+    else:
+        context={}
+        return render(request,'cart.html',context)
+
 
 def remove_item_from_cart(request,pk):
     item=OrderedItem.objects.get(pk=pk)
@@ -36,17 +41,19 @@ def checkout_cart(request):
                 owner=customer,
                 order_status=Order.CART_STAGE
             )
+            print("before id",order_obj.id)
             if order_obj:
                 order_obj.order_status=Order.ORDER_CONFIRMED
                 order_obj.total_price=total
                 order_obj.save()
-                for pid, qty in zip(product_ids, quantities):
-                    OrderedProducts.objects.create(
-                        order=order_obj,
-                        product_id=pid,
-                        quantity=int(qty)
-                    )   
-                print()
+                print("after id",order_obj.id)
+                # for pid, qty in zip(product_ids, quantities):
+                    # OrderedItem.objects.create(
+                    #    order=order_obj,
+                    #    product_id=pid,
+                    #    quantity=int(qty)
+                    # )   
+                    # print(OrderedItem)
                 status_message="Your order is processed. Your item will be delivered within 2 days"
                 messages.success(request,status_message)
             else:
@@ -65,7 +72,7 @@ def show_orders(request):
     context={'orders':all_orders}
     return render(request,'orders.html',context)
 
-@login_required(login_url='account')                
+login_required(login_url='account')                
 def add_to_cart(request):
     if request.POST:
         user=request.user
@@ -92,6 +99,6 @@ def add_to_cart(request):
 
 @login_required(login_url='account')
 def ordered_product(request,id):
-    all_orders=OrderedProducts.objects.filter(order_id=id) 
+    all_orders=OrderedItem.objects.filter(owner=id) 
     context={'orders':all_orders}
     return render(request,'ordered_product.html',context)
