@@ -72,7 +72,7 @@ def show_orders(request):
     context={'orders':all_orders}
     return render(request,'orders.html',context)
 
-login_required(login_url='account')                
+@login_required(login_url='account')                
 def add_to_cart(request):
     if request.POST:
         user=request.user

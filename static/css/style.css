@@ -8,7 +8,7 @@ body{
     font-family: 'Poppins', sans-serif;
 }
 
-.navbar
+.navbar 
 {
     display: flex;
     align-items: center;
@@ -200,15 +200,19 @@ small{
 .footer{
     background: black;
     color: #8a8a8a;
-    font-size: 14px;
-    padding: 60px 0 20px;
+    font-size: 10px;
+    padding: 5px 0;
 }
 .footer p{
+    font-size: 10px;
+    margin-bottom: 3px;
+    line-height: 1.2;
     color: #8a8a8a;
 }
 .footer h3{
     color: #fff;
-    margin-bottom: 20px;
+    font-size: 11px;
+    margin-bottom: 3px;
 }
 .footer-col-1, .footer-col-2, .footer-col-3, .footer-col-4{
     min-width: 250px;
@@ -222,17 +226,22 @@ small{
     text-align: center;
 }
 .footer-col-2 img{
-    width: 180px;
-    margin-bottom: 20px;
+    width: 90px;
+    margin-bottom: 5px;
 }
 .footer-col-3, .footer-col-4{
     flex-basis: 12%;
     text-align: center;
 }
 ul{
+    font-size: 10px;
+    margin-bottom: 2px;
+    line-height: 1.2;
     list-style-type: none;
 }
 .app-logo{
+    width: 60px;           /* reduce logo size */
+    margin-right: 3px;
     margin-top: 20px;
 }
 .app-logo img{
@@ -242,9 +251,11 @@ ul{
     border: none;
     background: #b5b5b5;
     height: 1px;
-    margin: 20px 0;
+    margin: 5px 0;
 }
 .copyright{
+    font-size: 9px;          /* very compact copyright */
+    margin-top: 3px;
     text-align: center;
 }
 .menu-icon{
