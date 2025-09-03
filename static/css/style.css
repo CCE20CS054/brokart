@@ -233,7 +233,7 @@ small{
     flex-basis: 12%;
     text-align: center;
 }
-ul{
+.footer ul{
     font-size: 12px;
     margin-bottom: 4px;
     line-height: 1.3;
