@@ -24,6 +24,7 @@
         <p>Email: {{ user.email }}</p>
         <p>Phone: {{ user.customer_profile.phone }}</p>
         <p>Address: {{ user.customer_profile.address }}</p>
+        <a href="{% url 'edit_profile' %}">Edit Profile</a>
     </div>
     {% endif %}
     {% endif %}

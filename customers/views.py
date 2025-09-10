@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from . models import Customer
 def sign_out(request):
     logout(request)
@@ -51,3 +52,33 @@ def show_account(request):
         else:
             messages.error(request,'invalid user credentials')
     return render(request,'account.html',context)
+
+@login_required
+def edit_profile(request):
+    user = request.user
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        
+        user = request.user
+        user.username = username
+        user.email = email
+        #user.customer_profile.phone = phone
+        #user.customer_profile.address = address
+        user.save()
+        customer=Customer.objects.get(
+            user=user
+        )
+        customer.phone=phone
+        customer.address=address
+        customer.save()
+        print(user)
+        print(user.customer_profile.phone)
+        messages.success(request, "Profile updated successfully!")
+        return redirect('edit_profile')  # or wherever you want to redirect
+    
+    elif request.method == 'GET':
+        return render(request, 'edit_profile.html', {'user': user})
+        

@@ -5,5 +5,6 @@ from django.conf import settings
 from . import views
 urlpatterns = [
     path('account',views.show_account,name='account'),
-    path('logout',views.sign_out,name='logout')
+    path('logout',views.sign_out,name='logout'),
+    path('edit_profile',views.edit_profile,name='edit_profile')
 ]

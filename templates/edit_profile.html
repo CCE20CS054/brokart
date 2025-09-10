@@ -1,0 +1,61 @@
+{% extends 'blank_layout.html' %}
+{% block content %}
+<h2>Edit Profile</h2>
+
+{% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li style="color: green;">{{ message }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+{% if user.is_authenticated %}
+<div style="margin-left: auto; font-size: 0.9rem; display: flex; align-items: center; position: relative;">
+    
+    <!-- Display user info -->
+    <div id="userDisplay" style="display: flex; align-items: center;"> -->
+        <span style="margin-right: 5px;">👤</span>
+        <span>{{ user.username }}</span>
+        <button onclick="toggleForm()" style="margin-left: 10px;">Edit</button>
+    </div> 
+    
+    <!-- Edit form, hidden by default -->
+    <form id="editForm" method="POST" action="{% url 'edit_profile' %}" style="display: none; background: #fff; border: 1px solid #ccc; padding: 10px; border-radius: 5px; position: absolute; top: 40px; right: 0;">
+        {% csrf_token %}
+        <div>
+            <input type="text" name="username" value="{{ user.username }}" placeholder="Username" required>
+        </div>
+        <div style="margin-top: 5px;">
+            <input type="email" name="email" value="{{ user.email }}" placeholder="Email" required>
+        </div>
+        <div>
+            <input type="text" name="phone" value="{{ user.customer_profile.phone }}" placeholder="Phone" required>
+        </div>
+        <div>
+            <input type="text" name="address" value="{{ user.customer_profile.address }}" placeholder="Address" required>
+        </div>
+        <div style="margin-top: 5px; text-align: right;">
+            <button type="submit">Save</button>
+            <button type="button" onclick="toggleForm()">Cancel</button>
+        </div>
+    </form>
+    
+</div>
+
+<script>
+    function toggleForm() {
+        var display = document.getElementById('userDisplay');
+        var form = document.getElementById('editForm');
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
+            display.style.display = 'none';
+        } else {
+            form.style.display = 'none';
+            display.style.display = 'flex';
+        }
+    }
+</script>
+{% else %}
+<p>You need to be logged in to edit your profile.</p>
+{% endif %}
+{% endblock %}
