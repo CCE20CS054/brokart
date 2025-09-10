@@ -201,7 +201,7 @@ small{
     background: black;
     color: #8a8a8a;
     font-size: 12px;
-    padding: 15px 0;
+    padding: 20px 0;
 }
 .footer p{
     font-size: 12px;
@@ -527,4 +527,20 @@ form a{
     .cart-info p{
         display: none;
     }
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* ensures the body fills at least the full height of the screen */
+}
+
+.content {
+    flex: 1; /* makes this section expand and push the footer to the bottom */
 }
